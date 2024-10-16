@@ -65,7 +65,7 @@ def main():
                 print("GREATER_EQUAL >= null")
                 i+=1
             else:
-                print("GREAT > null")
+                print("GREATER > null")
         else:
             error = True
             line_number = file_contents.count("\n", 0, file_contents.find(c)) + 1
