@@ -73,11 +73,11 @@ def main():
             else:
                 print("SLASH / null")
         elif c == " ":
-            print("EOF  null")
+            break
         elif c == "\t":
-            print("TAB '\\t' null")
+            break
         elif c == "\n":
-            print("NEWLINE '\\n' null")
+            break
         else:
             error = True
             line_number = file_contents.count("\n", 0, file_contents.find(c)) + 1
