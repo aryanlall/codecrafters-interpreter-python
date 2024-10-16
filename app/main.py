@@ -21,10 +21,12 @@ def main():
     error = False
     i = 0
     line = 1
+    current_token = None
     while i < len(file_contents):
         c = file_contents[i]
         if c == "\n":
             line+=1
+            current_token = None
         elif c == "(":
             print("LEFT_PAREN ( null")
         elif c == "{":
