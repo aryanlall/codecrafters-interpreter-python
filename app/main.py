@@ -68,6 +68,7 @@ def main():
                 print("GREATER > null")
         elif c == "/":
             if i + 1 < len(file_contents) and file_contents[i + 1] == "/":
+                break;
                 i+=1
             else:
                 print("SLASH / null")
