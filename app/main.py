@@ -77,11 +77,11 @@ def main():
             else:
                 print("SLASH / null")
         elif c == " " or c == "\r" or c == "\t":
-            line+=1
+            i+=1
             pass
         else:
             error = True
-            print(f"[line {line}] Error: Unexpected character: {c}", file=sys.stderr)
+            print(f"[line {line + 1}] Error: Unexpected character: {c}", file=sys.stderr)
         i+=1
     print("EOF  null")
     if error:
