@@ -34,6 +34,8 @@ def main():
             print("PLUS + null")
         if c == "-":
             print("MINUS - null")
+        if c == ";":
+            print("SEMICOLON ; null")
         if c == "}":
             print("RIGHT_BRACE } null")
         if c == ")":
