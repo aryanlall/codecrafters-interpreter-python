@@ -49,7 +49,11 @@ def main():
             else:
                 print("EQUAL = null")
         elif c == "!":
-            print("NOT_EQUAL ! null")
+            if i + 1 < len(file_contents) and file_contents[i + 1] == "=":
+                print("BANG_EQUAL != null")
+                i+=1
+            else:
+                print("BANG ! null")
         elif c == "<":
             print("LESS_EQUAL < null")
         elif c == ">":
