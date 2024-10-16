@@ -55,9 +55,17 @@ def main():
             else:
                 print("BANG ! null")
         elif c == "<":
-            print("LESS_EQUAL < null")
+            if i + 1 < len(file_contents) and file_contents[i + 1] == "=":
+                print("LESS_EQUAL <= null")
+                i+=1
+            else:
+                print("LESS < null")
         elif c == ">":
-            print("GREAT_EQUAL > null")
+            if i + 1 < len(file_contents) and file_contents[i + 1] == "=":
+                print("GREATER_EQUAL >= null")
+                i+=1
+            else:
+                print("GREAT_EQUAL > null")
         else:
             error = True
             line_number = file_contents.count("\n", 0, file_contents.find(c)) + 1
