@@ -68,16 +68,13 @@ def main():
                 print("GREATER > null")
         elif c == "/":
             if i + 1 < len(file_contents) and file_contents[i + 1] == "/":
-                break;
                 i+=1
+                while i < len(file_contents) and file_contents[i] != "\n":
+                        i += 1
             else:
                 print("SLASH / null")
-        elif c == " ":
-            break
-        elif c == "\t":
-            break
-        elif c == "\n":
-            break
+        elif c == " " or c == "\r" or c == "\t":
+            pass
         else:
             error = True
             line_number = file_contents.count("\n", 0, file_contents.find(c)) + 1
