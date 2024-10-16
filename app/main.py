@@ -20,9 +20,12 @@ def main():
         file_contents = file.read()
     error = False
     i = 0
+    line = 1
     while i < len(file_contents):
         c = file_contents[i]
-        if c == "(":
+        if c == "\n":
+            line+=1
+        elif c == "(":
             print("LEFT_PAREN ( null")
         elif c == "{":
             print("LEFT_BRACE { null")
