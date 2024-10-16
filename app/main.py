@@ -1,5 +1,6 @@
 import sys
 
+
 def main():
     # You can use print statements as follows for debugging, they'll be visible when running tests.
     print("Logs from your program will appear here!", file=sys.stderr)
@@ -17,81 +18,75 @@ def main():
 
     with open(filename) as file:
         file_contents = file.read()
-
     error = False
     i = 0
-    line = 1  # Initialize the line counter
+    line = 1
     while i < len(file_contents):
         c = file_contents[i]
-
         if c == "\n":
-            line += 1  # Increment line number on newlines
+            line+=1
         elif c == "(":
-            print(f"LEFT_PAREN ( null at line {line}")
+            print("LEFT_PAREN ( null")
         elif c == "{":
-            print(f"LEFT_BRACE {{ null at line {line}")
+            print("LEFT_BRACE { null")
         elif c == "*":
-            print(f"STAR * null at line {line}")
+            print("STAR * null")
         elif c == ".":
-            print(f"DOT . null at line {line}")
+            print("DOT . null")
         elif c == ",":
-            print(f"COMMA , null at line {line}")
+            print("COMMA , null")
         elif c == "+":
-            print(f"PLUS + null at line {line}")
+            print("PLUS + null")
         elif c == "-":
-            print(f"MINUS - null at line {line}")
+            print("MINUS - null")
         elif c == ";":
-            print(f"SEMICOLON ; null at line {line}")
+            print("SEMICOLON ; null")
         elif c == "}":
-            print(f"RIGHT_BRACE }} null at line {line}")
+            print("RIGHT_BRACE } null")
         elif c == ")":
-            print(f"RIGHT_PAREN ) null at line {line}")
+            print("RIGHT_PAREN ) null")
         elif c == "=":
             if i + 1 < len(file_contents) and file_contents[i + 1] == "=":
-                print(f"EQUAL_EQUAL == null at line {line}")
-                i += 1  # Skip the next character since it's part of '=='
+                print("EQUAL_EQUAL == null")
+                i+=1
             else:
-                print(f"EQUAL = null at line {line}")
+                print("EQUAL = null")
         elif c == "!":
             if i + 1 < len(file_contents) and file_contents[i + 1] == "=":
-                print(f"BANG_EQUAL != null at line {line}")
-                i += 1  # Skip the next character since it's part of '!='
+                print("BANG_EQUAL != null")
+                i+=1
             else:
-                print(f"BANG ! null at line {line}")
+                print("BANG ! null")
         elif c == "<":
             if i + 1 < len(file_contents) and file_contents[i + 1] == "=":
-                print(f"LESS_EQUAL <= null at line {line}")
-                i += 1  # Skip the next character since it's part of '<='
+                print("LESS_EQUAL <= null")
+                i+=1
             else:
-                print(f"LESS < null at line {line}")
+                print("LESS < null")
         elif c == ">":
             if i + 1 < len(file_contents) and file_contents[i + 1] == "=":
-                print(f"GREATER_EQUAL >= null at line {line}")
-                i += 1  # Skip the next character since it's part of '>='
+                print("GREATER_EQUAL >= null")
+                i+=1
             else:
-                print(f"GREATER > null at line {line}")
+                print("GREATER > null")
         elif c == "/":
             if i + 1 < len(file_contents) and file_contents[i + 1] == "/":
-                i += 1  # Skip the next character since it's part of '//'
-                # Skip comments until the end of the line
+                i+=1
                 while i < len(file_contents) and file_contents[i] != "\n":
-                    i += 1
+                        i += 1
             else:
-                print(f"SLASH / null at line {line}")
+                print("SLASH / null")
         elif c == " " or c == "\r" or c == "\t":
-            # Ignore spaces, carriage returns, and tabs
             pass
         else:
             error = True
             print(f"[line {line}] Error: Unexpected character: {c}", file=sys.stderr)
-
-        i += 1  # Move to the next character after processing the current one
-
-    print("EOF null")
+        i+=1
+    print("EOF  null")
     if error:
-        exit(65)  # Exit with an error code if any error occurred
+        exit(65)
     else:
-        exit(0)  # Exit normally if no errors occurred
+        exit(0)
 
 if __name__ == "__main__":
     main()
