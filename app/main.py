@@ -41,9 +41,16 @@ def main():
         elif c == ")":
             print("RIGHT_PAREN ) null")
         elif c == "=":
-            print("EQUAL = null")
-        elif c == "==":
-            print("EQUAL_EQUAL == null")
+            if c == "=":
+                print("EQUAL_EQUAL == null")
+            else:
+                print("EQUAL = null")
+        elif c == "!":
+            print("NOT_EQUAL ! null")
+        elif c == "<":
+            print("LESS_EQUAL < null")
+        elif c == ">":
+            print("GREAT_EQUAL > null")
         else:
             error = True
             line_number = file_contents.count("\n", 0, file_contents.find(c)) + 1
