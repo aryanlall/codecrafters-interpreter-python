@@ -73,7 +73,7 @@ def main():
             else:
                 print("SLASH / null")
         elif c == " ":
-            print("WHITESPACE  null")
+            print("EOF  null")
         elif c == "\t":
             print("TAB '\\t' null")
         elif c == "\n":
