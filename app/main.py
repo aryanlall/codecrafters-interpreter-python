@@ -19,7 +19,9 @@ def main():
     with open(filename) as file:
         file_contents = file.read()
     error = False
-    for c in file_contents:
+    i = 0
+    while i < len(file_contents):
+        c = file_contents[i]
         if c == "(":
             print("LEFT_PAREN ( null")
         elif c == "{":
@@ -41,8 +43,9 @@ def main():
         elif c == ")":
             print("RIGHT_PAREN ) null")
         elif c == "=":
-            if c == "=":
+            if i + 1 < len(file_contents) and file_contents[i + 1] == "=":
                 print("EQUAL_EQUAL == null")
+                i+=1
             else:
                 print("EQUAL = null")
         elif c == "!":
@@ -55,6 +58,7 @@ def main():
             error = True
             line_number = file_contents.count("\n", 0, file_contents.find(c)) + 1
             print("[line %s] Error: Unexpected character: %s" % (line_number, c), file=sys.stderr,)
+        i+=1
     print("EOF  null")
     if error:
         exit(65)
