@@ -40,6 +40,8 @@ def main():
             print("RIGHT_BRACE } null")
         elif c == ")":
             print("RIGHT_PAREN ) null")
+        elif c == "=":
+            print("EQUAL = null")
         else:
             error = True
             line_number = file_contents.count("\n", 0, file_contents.find(c)) + 1
