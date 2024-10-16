@@ -72,6 +72,12 @@ def main():
                 i+=1
             else:
                 print("SLASH / null")
+        elif c == " ":
+            print("WHITESPACE ' ' null")
+        elif c == "\t":
+            print("TAB '\\t' null")
+        elif c == "\n":
+            print("NEWLINE '\\n' null")
         else:
             error = True
             line_number = file_contents.count("\n", 0, file_contents.find(c)) + 1
