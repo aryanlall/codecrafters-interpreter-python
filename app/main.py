@@ -40,8 +40,6 @@ def main():
             print("RIGHT_BRACE } null")
         elif c == ")":
             print("RIGHT_PAREN ) null")
-        elif c == "=":
-            print("EQUAL = null")
         elif c == "==":
             print("EQUAL_EQUAL == null")
         elif c == "!":
