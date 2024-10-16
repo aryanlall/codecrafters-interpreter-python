@@ -80,8 +80,7 @@ def main():
             pass
         else:
             error = True
-            line_number = file_contents.count("\n", 0, file_contents.find(c)) + 1
-            print("[line %s] Error: Unexpected character: %s" % (line_number, c), file=sys.stderr,)
+            print(f"[line {line}] Error: Unexpected character: {c}", file=sys.stderr)
         i+=1
     print("EOF  null")
     if error:
