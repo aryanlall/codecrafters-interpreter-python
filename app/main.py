@@ -105,7 +105,7 @@ def main():
             if has_dot:
                 print(f"NUMBER {number} {number}")
             else:
-                print(f"NUMBER {number} {number}.0 null")
+                print(f"NUMBER {number} {number}.0")
             i -= 1
         else:
             error = True
