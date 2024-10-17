@@ -238,7 +238,7 @@ def parse_expression(tokens):
             tokens.pop(0)
             return f"(group {expr})"
         else:
-            return "Error: Mismatched parantheses."
+            return "Error: Mismatched parentheses."
     else:
         left = tokens.pop(0)
 
