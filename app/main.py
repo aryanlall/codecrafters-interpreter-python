@@ -115,7 +115,7 @@ def main():
             continue
         elif c.isalpha() or c == "_":
             start = i
-            while i<len(file_contents) and (file_contents[i].isalpha() or file_contents[i] == "_"):
+            while i<len(file_contents) and (file_contents[i].isalnum() or file_contents[i] == "_"):
                 i+=1
             identifier = file_contents[start:i]
             print(f"IDENTIFIER {identifier} null")
