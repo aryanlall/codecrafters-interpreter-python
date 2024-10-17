@@ -234,11 +234,11 @@ def parse_expression(tokens):
     token = tokens.pop(0)
     if token == "(":
         expr = parse_expression(tokens)
-        if tokens and tokens[0] == ")":
+        if expr is not None and len(tokens) > 0 and tokens[0] == ")":
             tokens.pop(0)
             return f"(group {expr})"
         else:
-            return None
+            return "Error: Mismatched parentheses."
     else:
         left = tokens.pop(0)
 
