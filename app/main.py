@@ -1,6 +1,8 @@
 import sys
 
-
+RESERVED_WORDS={"and", "class", "else", "false", "for", "fun", 
+    "if", "nil", "or", "print", "return", "super", 
+    "this", "true", "var", "while"}
 def main():
     # You can use print statements as follows for debugging, they'll be visible when running tests.
     print("Logs from your program will appear here!", file=sys.stderr)
@@ -118,7 +120,10 @@ def main():
             while i<len(file_contents) and (file_contents[i].isalnum() or file_contents[i] == "_"):
                 i+=1
             identifier = file_contents[start:i]
-            print(f"IDENTIFIER {identifier} null")
+            if identifier in RESERVED_WORDS:
+                print(f"RESERVED_WORD {identifier} null")
+            else:
+                print(f"IDENTIFIER {identifier} null")
             continue
         else:
             error = True
