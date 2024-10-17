@@ -199,7 +199,7 @@ def parse(file_contents):
             identifier = file_contents[start:i]
             tokens.append(identifier)
             continue
-        elif c == '""':
+        elif c == '"':
             word = ""
             i+=1
             while i<len(file_contents) and file_contents[i] != '"':
