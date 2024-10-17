@@ -231,14 +231,14 @@ def parse(file_contents):
 def parse_expression(tokens):
     if len(tokens) == 0:
         return None
-    if tokens[0] == "(":
-        tokens.pop(0)
+    token = tokens.pop(0)
+    if token == "(":
         expr = parse_expression(tokens)
         if tokens and tokens[0] == ")":
             tokens.pop(0)
             return f"(group {expr})"
         else:
-            return "Error: Mismatched parentheses."
+            return None
     else:
         left = tokens.pop(0)
 
