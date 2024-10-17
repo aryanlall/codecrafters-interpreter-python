@@ -105,7 +105,7 @@ def main():
             try:
                 float_value = float(number)
                 normalized_value = f"{float_value:.1f}"
-                print(f"NUMBER {number} {normalized_value} null")
+                print(f"NUMBER {number} {normalized_value}")
             except ValueError:
                 error = True
                 print(f"[line {line}] Error: Invalid number format: {number}", file=sys.stderr)
