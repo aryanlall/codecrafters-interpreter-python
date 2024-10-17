@@ -73,12 +73,11 @@ def main():
             if i + 1 < len(file_contents) and file_contents[i + 1] == "/":
                 i+=1
                 while i < len(file_contents) and file_contents[i] != "\n":
-                        i += 1
+                        line += 1
             else:
                 print("SLASH / null")
         elif c == " " or c == "\r" or c == "\t":
-            i+=1
-            continue
+            pass
         else:
             error = True
             print("[line %s] Error: Unexpected character: %s" % (line, c), file=sys.stderr,)
