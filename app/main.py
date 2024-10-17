@@ -174,7 +174,7 @@ def parse(file_contents):
             number = file_contents[start:i]
             try:
                 float_value = float(number)
-                normalized_value = f"{float_value:.1f}"
+                normalized_value = f"{float_value:.2f}"
                 tokens.append(normalized_value)
             except ValueError:
                 error = True
