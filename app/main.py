@@ -244,7 +244,7 @@ def parse_expression(tokens):
                 tokens.pop(0)
                 return f"(group {expr})"
             else:
-                return None
+                return "Error: Mismatched parentheses."
     return token
 
 if __name__ == "__main__":
