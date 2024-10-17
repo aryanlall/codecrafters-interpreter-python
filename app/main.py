@@ -113,6 +113,13 @@ def main():
                 error = True
                 print(f"[line {line}] Error: Invalid number literal: {number}", file=sys.stderr)
             continue
+        elif c.isalpha() or c == "_":
+            start = i
+            while i<len(file_contents) and (file_contents[i].isalpha() or file_contents[i] == "_"):
+                i+=1
+            identifier = file_contents[start:i]
+            print(f"IDENTIFIER {identifier} null")
+            continue
         else:
             error = True
             print("[line %s] Error: Unexpected character: %s" % (line, c), file=sys.stderr,)
