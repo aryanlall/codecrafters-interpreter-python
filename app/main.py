@@ -232,6 +232,20 @@ def parse_expression(tokens):
     if len(tokens) == 0:
         return None
     token = tokens.pop(0)
+    if token == "-":
+        if len(tokens) > 0:
+            operand = parse_expression(tokens)
+            if operand:
+                return f"(- {operand})"
+            else:
+                return None
+    elif token == "!":
+        if len(tokens) > 0:
+            operand = parse_expression(tokens)
+            if operand:
+                return f"(! {operand})"
+            else:
+                return None
     if token == "(":
         expr = parse_expression(tokens)
         if expr is not None:
