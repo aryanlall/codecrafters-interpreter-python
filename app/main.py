@@ -120,7 +120,7 @@ def tokenize(file_contents):
                 if float_value.is_integer():
                     normalized_value = f"{int(float_value)}.0"
                 else:
-                    normalized_value = f"{float_value:.10g}"
+                    normalized_value = f"{float_value:.2f}"
                 print(f"NUMBER {number} {normalized_value}")
             except ValueError:
                 error = True
@@ -184,6 +184,17 @@ def parse(file_contents):
                 print(f"[line {line}] Error: Invalid number literal: {number}", file=sys.stderr)
                 break
             continue
+        elif c == '"':
+            word = ""
+            i += 1
+            while i < len(file_contents) and file_contents[i] != '"':
+                string_value += file_contents[i]
+                i += 1
+            if i == len(file_contents):
+                error = True
+                print(f"[line {line}] Error: Unterminated string literal.", file=sys.stderr)
+                break
+            tokens.append(f'"{word}"')
         elif c == "+":
             tokens.append("+")
         elif c == "-":
@@ -199,17 +210,6 @@ def parse(file_contents):
             identifier = file_contents[start:i]
             tokens.append(identifier)
             continue
-        elif c == '"':
-            word = ""
-            i+=1
-            while i<len(file_contents) and file_contents[i] != '"':
-                word+= file_contents[i]
-                i+=1
-            if i == len(file_contents):
-                error = True
-                print(f"[line {line}] Error: Unterminated string literal.", file=sys.stderr)
-                break
-            tokens.append(f'"{word}"')
         else:
             error = True
             print(f"[line {line}] Error: Unexpected character: {c}", file=sys.stderr)
