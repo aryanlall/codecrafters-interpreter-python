@@ -236,9 +236,7 @@ def parse_expression(tokens):
         if len(tokens) > 0:
             operand = parse_expression(tokens)
             if operand:
-                return f"({token} {operand})"  # Return negation or logical not expression
-            else:
-                return None
+                return f"({token} {operand})"
     if token == "(":
         expr = parse_expression(tokens)
         if expr is not None:
