@@ -234,25 +234,16 @@ def parse_expression(tokens):
     token = tokens.pop(0)
     if token == "(":
         expr = parse_expression(tokens)
-        if tokens and tokens[0] == ")":
-            tokens.pop(0)
-            return f"(group {expr})"
+        if expr is not None:
+            if len(tokens) > 0 and tokens[0] == ")":
+                tokens.pop(0)  # Remove the closing parenthesis
+                return f"(group {expr})"
+            else:
+                return None  # Return None for unmatched parentheses
         else:
-            return "Error: Mismatched parentheses."
-    
-    left = parse_expression(tokens)
-    
-    if left is None:
+            return None  # If no expression inside parentheses
+    else:
         return token
-    
-    operator = tokens.pop(0)
-    
-    right = parse_expression(tokens)
-    
-    if right is None:
-        return None
-    
-    return f"({operator} {left} {right})"
 
 if __name__ == "__main__":
     main()
