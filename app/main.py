@@ -177,7 +177,7 @@ def parse(file_contents):
                 if float_value.is_integer():
                     normalized_value = f"{int(float_value)}.0"
                 else:
-                    normalized_value = f"{float_value}".rstrip('0').rstrip('.')
+                    normalized_value = f"{float_value:.2f}".rstrip('0').rstrip('.')
                 tokens.append(normalized_value)
             except ValueError:
                 error = True
