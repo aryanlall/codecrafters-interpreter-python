@@ -104,15 +104,15 @@ def main():
             number = file_contents[start:i]
             try:
                 float_value = float(number)
-                if '.' in number:
-                    normalized_value = str(float_value).rstrip('0').rstrip('.') if '.' in str(float_value) else str(float_value)
+                if float_value.is_integer():
+                    normalized_value = f"{int(float_value)}.0"
                 else:
-                    normalized_value = str(float_value)
+                    normalized_value = f"{float_value:.10g}"
                 print(f"NUMBER {number} {normalized_value}")
             except ValueError:
                 error = True
-                print(f"[line {line}] Error: Invalid number format: {number}", file=sys.stderr)
-            i -= 1
+                print(f"[line {line}] Error: Invalid number literal: {number}", file=sys.stderr)
+            continue
         else:
             error = True
             print("[line %s] Error: Unexpected character: %s" % (line, c), file=sys.stderr,)
