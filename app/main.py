@@ -172,7 +172,13 @@ def parse(file_contents):
                     has_dot = True
                 i += 1
             number = file_contents[start:i]
-            tokens.append(number)
+            try:
+                float_value = float(number)
+                normalized_value = f"{float_value:.1f}"
+                print(f"NUMBER {number} {normalized_value}")
+            except ValueError:
+                error = True
+                print(f"[line {line}] Error: Invalid number literal: {number}", file=sys.stderr)
             continue
         elif c == "+":
             tokens.append("+")
