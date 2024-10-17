@@ -102,10 +102,13 @@ def main():
                     has_dot = True
                 i+=1
             number = file_contents[start:i]
-            if has_dot:
-                print(f"NUMBER {number} {number}")
-            else:
-                print(f"NUMBER {number} {number}.0")
+            try:
+                float_value = float(number)
+                normalized_value = f"{float_value:.1f}"
+                print(f"NUMBER {number} {normalized_value} null")
+            except ValueError:
+                error = True
+                print(f"[line {line}] Error: Invalid number format: {number}", file=sys.stderr)
             i -= 1
         else:
             error = True
