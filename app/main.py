@@ -81,7 +81,7 @@ def main():
             continue
         else:
             error = True
-            print("[line %s] Error: Unexpected character: %s" % (line + 1, c), file=sys.stderr,)
+            print("[line %s] Error: Unexpected character: %s" % (line, c), file=sys.stderr,)
         i+=1
     print("EOF  null")
     if error:
