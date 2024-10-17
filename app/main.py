@@ -103,9 +103,9 @@ def main():
                 i+=1
             number = file_contents[start:i]
             if has_dot:
-                print(f"NUMBER_LITERAL {number} null")
+                print(f"NUMBER {number} {number}")
             else:
-                print(f"NUMBER_LITERAL {number}.0 null")
+                print(f"NUMBER {number} {number}.0 null")
             i -= 1
         else:
             error = True
