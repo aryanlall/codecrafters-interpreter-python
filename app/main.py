@@ -121,7 +121,7 @@ def main():
                 i+=1
             identifier = file_contents[start:i]
             if identifier in RESERVED_WORDS:
-                print(f"RESERVED_WORD {identifier} null")
+                print(f"{identifier.upper()} {identifier} null")
             else:
                 print(f"IDENTIFIER {identifier} null")
             continue
