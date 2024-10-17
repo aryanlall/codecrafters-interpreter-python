@@ -71,9 +71,10 @@ def main():
                 print("GREATER > null")
         elif c == "/":
             if i + 1 < len(file_contents) and file_contents[i + 1] == "/":
-                i+=1
+                i+=2
                 while i < len(file_contents) and file_contents[i] != "\n":
-                        line += 1
+                        i += 1
+                line+=1
             else:
                 print("SLASH / null")
         elif c == " " or c == "\r" or c == "\t":
