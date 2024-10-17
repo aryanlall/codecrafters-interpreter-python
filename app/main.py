@@ -194,7 +194,7 @@ def parse(file_contents):
                 error = True
                 print(f"[line {line}] Error: Unterminated string literal.", file=sys.stderr)
                 break
-            tokens.append(f'"{word}"')
+            tokens.append(word)
         elif c == "+":
             tokens.append("+")
         elif c == "-":
