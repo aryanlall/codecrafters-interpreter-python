@@ -158,13 +158,21 @@ def parse(file_contents):
 
         if c == "\n":
             line += 1
-        elif c in " \r\t":  # Ignore whitespace
+        elif c in " \r\t":
             pass
         elif c.isdigit():
             start = i
+            has_dot = False
             while i < len(file_contents) and (file_contents[i].isdigit() or file_contents[i] == "."):
+                if file_contents[i] == ".":
+                    if has_dot:
+                        error = True
+                        print(f"[line {line}] Error: Unexpected character: .", file=sys.stderr)
+                        break
+                    has_dot = True
                 i += 1
-            tokens.append(file_contents[start:i])
+            number = file_contents[start:i]
+            tokens.append(number)
             continue
         elif c == "+":
             tokens.append("+")
@@ -174,7 +182,7 @@ def parse(file_contents):
             tokens.append("(")
         elif c == ")":
             tokens.append(")")
-        elif c.isalpha() or c == "_":  # Handle identifiers and reserved words
+        elif c.isalpha() or c == "_":
             start = i
             while i < len(file_contents) and (file_contents[i].isalnum() or file_contents[i] == "_"):
                 i += 1
@@ -203,19 +211,19 @@ def parse_expression(tokens):
     if len(tokens) == 0:
         return None
 
-    left = tokens.pop(0)  # Get the left operand
+    left = tokens.pop(0)
 
     if len(tokens) == 0:
         return left
 
-    operator = tokens.pop(0)  # Get the operator
+    operator = tokens.pop(0)
 
     if len(tokens) == 0:
         return None
 
-    right = tokens.pop(0)  # Get the right operand
+    right = tokens.pop(0)
 
-    return f"({operator} {left} {right})"  # Return AST representation
+    return f"({operator} {left} {right})"
 
 if __name__ == "__main__":
     main()
