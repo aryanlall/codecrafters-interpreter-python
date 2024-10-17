@@ -237,9 +237,9 @@ def parse_expression(tokens):
         expr = parse_expression(tokens)
         if expr is not None and len(tokens) > 0 and tokens[0] == ")":
             tokens.pop(0)
-            return f"(group {expr}"
+            return f"(group {expr})"
         else:
-            return "Error: Mismatched parentheses."
+            return None
     else:
         left = token
         if len(tokens) == 0:
