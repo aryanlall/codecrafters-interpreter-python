@@ -231,20 +231,28 @@ def parse(file_contents):
 def parse_expression(tokens):
     if len(tokens) == 0:
         return None
+    if tokens[0] == "(":
+        tokens.pop(0)
+        expr = parse_expression(tokens)
+        if tokens and tokens[0] == ")":
+            tokens.pop(0)
+            return f"(group {expr})"
+        else:
+            return "Error: Mismatched parantheses."
+    else:
+        left = tokens.pop(0)
 
-    left = tokens.pop(0)
+        if len(tokens) == 0:
+            return left
 
-    if len(tokens) == 0:
-        return left
+        operator = tokens.pop(0)
 
-    operator = tokens.pop(0)
+        if len(tokens) == 0:
+            return None
 
-    if len(tokens) == 0:
-        return None
+        right = tokens.pop(0)
 
-    right = tokens.pop(0)
-
-    return f"({operator} {left} {right})"
+        return f"({operator} {left} {right})"
 
 if __name__ == "__main__":
     main()
