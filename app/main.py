@@ -79,6 +79,17 @@ def main():
                 print("SLASH / null")
         elif c == " " or c == "\r" or c == "\t":
             pass
+        elif c == '"':
+                word = ""
+                i += 1
+                while i < len(file_contents) and file_contents[i] != '"':
+                    word += file_contents[i]
+                    i += 1
+                if i == len(file_contents):
+                    error = True
+                    print(f"[line {line}] Error: Unterminated string.", file=sys.stderr)
+                else:
+                    print(f'STRING "{word}" {word}')
         else:
             error = True
             print("[line %s] Error: Unexpected character: %s" % (line, c), file=sys.stderr,)
