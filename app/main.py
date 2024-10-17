@@ -219,7 +219,7 @@ def parse(file_contents):
     if not error:
         ast = parse_expression(tokens)
         if ast:
-            print(ast)
+            print(f'"{ast}"')
         else:
             print("Error: Invalid expression.")
 
