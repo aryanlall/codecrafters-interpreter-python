@@ -233,22 +233,32 @@ def parse_expression(tokens):
         return None
     token = tokens.pop(0)
 
-    if token == "(":
+    if token == "LEFT_PAREN":
         expr = parse_expression(tokens)
-        if expr is not None and len(tokens) > 0 and tokens[0] == ")":
+        if tokens and tokens[0] == "RIGHT_PAREN":
             tokens.pop(0)
             return f"(group {expr})"
         else:
-            return None
-    else:
-        left = token
-        if len(tokens) == 0:
-            return left
-        operator = tokens.pop(0)
-        if len(tokens) == 0:
-            return None
-        right = tokens.pop(0)
-        return f"({operator} {left} {right})"
+            return "Error: Mismatched parentheses."
+    elif token == "RIGHT_PAREN":
+        return "Error: Unexpected closing parenthesis"
+    
+    left = parse_expression(tokens)
+    
+    if left is None:
+        return None
+    
+    operator = tokens.pop(0)
+    
+    if operator == "LEFT_PAREN":
+        return "(group " + parse_expression(tokens) + ")"
+    
+    right = parse_expression(tokens)
+    
+    if right is None:
+        return None
+    
+    return f"({operator} {left} {right})"
 
 if __name__ == "__main__":
     main()
