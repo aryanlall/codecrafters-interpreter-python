@@ -188,7 +188,7 @@ def parse(file_contents):
             word = ""
             i += 1
             while i < len(file_contents) and file_contents[i] != '"':
-                string_value += file_contents[i]
+                word += file_contents[i]
                 i += 1
             if i == len(file_contents):
                 error = True
