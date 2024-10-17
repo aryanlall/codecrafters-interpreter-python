@@ -136,17 +136,6 @@ def tokenize(file_contents):
             else:
                 print(f"IDENTIFIER {identifier} null")
             continue
-        elif c == '"':
-            word = ""
-            i += 1
-            while i < len(file_contents) and file_contents[i] != '"':
-                word += file_contents[i]
-                i += 1
-            if i == len(file_contents):
-                error = True
-                print(f"[line {line}] Error: Unterminated string.", file=sys.stderr)
-            else:
-                print(f'STRING "{word}" {word}')
         else:
             error = True
             print(f"[line {line}] Error: Unexpected character: {c}", file=sys.stderr)
@@ -210,6 +199,17 @@ def parse(file_contents):
             identifier = file_contents[start:i]
             tokens.append(identifier)
             continue
+        elif c == '""':
+            word = ""
+            i+=1
+            while i<len(file_contents) and file_contents[i] != '"':
+                word+= file_contents[i]
+                i+=1
+            if i == len(file_contents):
+                error = True
+                print(f"[line {line}] Error: Unterminated string literal.", file=sys.stderr)
+                break
+            tokens.append(f'"{word}"')
         else:
             error = True
             print(f"[line {line}] Error: Unexpected character: {c}", file=sys.stderr)
