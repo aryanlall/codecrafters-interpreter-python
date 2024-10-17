@@ -90,6 +90,23 @@ def main():
                     print(f"[line {line}] Error: Unterminated string.", file=sys.stderr)
                 else:
                     print(f'STRING "{word}" {word}')
+        elif c.isdigit():
+            start = i
+            has_dot = False
+            while i<len(file_contents) and (file_contents[i].isdigit() or file_contents[i] == "."):
+                if file_contents[i] == ".":
+                    if has_dot:
+                        error = True
+                        print(f"[line {line}] Error: Unexpected character: .", file=sys.stderr)
+                        break
+                    has_dot = True
+                i+=1
+            number = file_contents[start:i]
+            if has_dot:
+                print(f"NUMBER_LITERAL {number} null")
+            else:
+                print(f"NUMBER_LITERAL {number}.0 null")
+            i -= 1
         else:
             error = True
             print("[line %s] Error: Unexpected character: %s" % (line, c), file=sys.stderr,)
