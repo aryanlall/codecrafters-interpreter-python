@@ -177,7 +177,7 @@ def parse(file_contents):
                 if float_value.is_integer():
                     normalized_value = f"{int(float_value)}.0"
                 else:
-                    normalized_value = f"{float_value:.2f}"
+                    normalized_value = f"{float_value}".rstrip('0').rstrip('.')
                 tokens.append(normalized_value)
             except ValueError:
                 error = True
@@ -236,12 +236,12 @@ def parse_expression(tokens):
         expr = parse_expression(tokens)
         if expr is not None:
             if len(tokens) > 0 and tokens[0] == ")":
-                tokens.pop(0)  # Remove the closing parenthesis
+                tokens.pop(0)
                 return f"(group {expr})"
             else:
-                return None  # Return None for unmatched parentheses
+                return None
         else:
-            return None  # If no expression inside parentheses
+            return None
     else:
         return token
 
