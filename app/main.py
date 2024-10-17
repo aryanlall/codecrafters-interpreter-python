@@ -90,7 +90,7 @@ def tokenize(file_contents):
                 line += 1
             else:
                 print("SLASH / null")
-        elif c in " \r\t":  # Ignore whitespace
+        elif c in " \r\t":
             pass
         elif c == '"':
             word = ""
@@ -136,6 +136,17 @@ def tokenize(file_contents):
             else:
                 print(f"IDENTIFIER {identifier} null")
             continue
+        elif c == '"':
+            word = ""
+            i += 1
+            while i < len(file_contents) and file_contents[i] != '"':
+                word += file_contents[i]
+                i += 1
+            if i == len(file_contents):
+                error = True
+                print(f"[line {line}] Error: Unterminated string.", file=sys.stderr)
+            else:
+                print(f'STRING "{word}" {word}')
         else:
             error = True
             print(f"[line {line}] Error: Unexpected character: {c}", file=sys.stderr)
