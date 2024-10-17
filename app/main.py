@@ -22,6 +22,7 @@ def main():
 
     with open(filename) as file:
         file_contents = file.read()
+        
     if command == "tokenize":
         tokenize(file_contents)
     elif command == "parse":
@@ -31,8 +32,10 @@ def tokenize(file_contents):
     error = False
     i = 0
     line = 1
+
     while i < len(file_contents):
         c = file_contents[i]
+
         if c == "\n":
             line += 1
         elif c == "(":
@@ -87,7 +90,7 @@ def tokenize(file_contents):
                 line += 1
             else:
                 print("SLASH / null")
-        elif c == " " or c == "\r" or c == "\t":
+        elif c in " \r\t":  # Ignore whitespace
             pass
         elif c == '"':
             word = ""
@@ -103,14 +106,14 @@ def tokenize(file_contents):
         elif c.isdigit():
             start = i
             has_dot = False
-            while i<len(file_contents) and (file_contents[i].isdigit() or file_contents[i] == "."):
+            while i < len(file_contents) and (file_contents[i].isdigit() or file_contents[i] == "."):
                 if file_contents[i] == ".":
                     if has_dot:
                         error = True
                         print(f"[line {line}] Error: Unexpected character: .", file=sys.stderr)
                         break
                     has_dot = True
-                i+=1
+                i += 1
             number = file_contents[start:i]
             try:
                 float_value = float(number)
@@ -135,8 +138,7 @@ def tokenize(file_contents):
             continue
         else:
             error = True
-            print("[line %s] Error: Unexpected character: %s" % (line, c), file=sys.stderr)
-
+            print(f"[line {line}] Error: Unexpected character: {c}", file=sys.stderr)
         i += 1
 
     print("EOF  null")
@@ -151,13 +153,12 @@ def parse(file_contents):
     line = 1
     error = False
 
-    # Tokenization step
     while i < len(file_contents):
         c = file_contents[i]
 
         if c == "\n":
             line += 1
-        elif c == " " or c == "\r" or c == "\t":
+        elif c in " \r\t":  # Ignore whitespace
             pass
         elif c.isdigit():
             start = i
@@ -173,13 +174,19 @@ def parse(file_contents):
             tokens.append("(")
         elif c == ")":
             tokens.append(")")
+        elif c.isalpha() or c == "_":  # Handle identifiers and reserved words
+            start = i
+            while i < len(file_contents) and (file_contents[i].isalnum() or file_contents[i] == "_"):
+                i += 1
+            identifier = file_contents[start:i]
+            tokens.append(identifier)
+            continue
         else:
             error = True
             print(f"[line {line}] Error: Unexpected character: {c}", file=sys.stderr)
             break
         i += 1
 
-    # Parsing step
     if not error:
         ast = parse_expression(tokens)
         if ast:
