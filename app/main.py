@@ -245,10 +245,7 @@ def parse_expression(tokens):
                 return f"(group {expr})"
             else:
                 return None
-        else:
-            return None
-    else:
-        return token
+    return token
 
 if __name__ == "__main__":
     main()
