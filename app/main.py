@@ -236,7 +236,7 @@ def parse_expression(tokens):
         expr = parse_expression(tokens)
         if tokens and tokens[0] == "RIGHT_PAREN":
             tokens.pop(0)
-            return f"(group {expr})"
+            return f"(group {expr}"
         else:
             return "Error: Mismatched parentheses."
     elif token == "RIGHT_PAREN":
