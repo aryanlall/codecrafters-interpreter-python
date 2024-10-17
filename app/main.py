@@ -175,7 +175,7 @@ def parse(file_contents):
             try:
                 float_value = float(number)
                 normalized_value = f"{float_value:.1f}"
-                print(f"NUMBER {number} {normalized_value}")
+                print(f"{normalized_value}")
             except ValueError:
                 error = True
                 print(f"[line {line}] Error: Invalid number literal: {number}", file=sys.stderr)
