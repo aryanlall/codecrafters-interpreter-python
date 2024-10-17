@@ -108,7 +108,7 @@ def main():
                     normalized_value = str(float_value).rstrip('0').rstrip('.') if '.' in str(float_value) else str(float_value)
                 else:
                     normalized_value = str(float_value)
-                print(f"NUMBER {number} {normalized_value} null")
+                print(f"NUMBER {number} {normalized_value}")
             except ValueError:
                 error = True
                 print(f"[line {line}] Error: Invalid number format: {number}", file=sys.stderr)
