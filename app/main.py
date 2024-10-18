@@ -235,11 +235,11 @@ def parse_expression(tokens):
     if token == "-":
         operand = parse_expression(tokens)
         if operand:
-            return f"(negate {operand})"
+            return f"(- {operand})"
     elif token == "!":
         operand = parse_expression(tokens)
         if operand:
-            return f"(not {operand})"
+            return f"(! {operand})"
     if token == "(":
         expr = parse_expression(tokens)
         if expr is not None:
