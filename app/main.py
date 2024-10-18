@@ -199,6 +199,10 @@ def parse(file_contents):
             tokens.append("+")
         elif c == "-":
             tokens.append("-")
+        elif c == "*":
+            tokens.append("*")
+        elif c == "/":
+            tokens.append("/")
         elif c == "(":
             tokens.append("(")
         elif c == ")":
@@ -233,23 +237,48 @@ def parse(file_contents):
 def parse_expression(tokens):
     if len(tokens) == 0:
         return None
+    left = parse_term(tokens)
+
+    while len(tokens) > 0 and tokens[0] in ("+", "-"):
+        operator = tokens.pop(0)
+        right = parse_term(tokens)
+        if operator == "+":
+            left = f"(+ {left} {right})"
+        elif operator == "-":
+            left = f"(- {left} {right})"
+
+    return left
+
+def parse_term(tokens):
+    left = parse_factor(tokens)
+
+    while len(tokens) > 0 and tokens[0] in ("*", "/"):
+        operator = tokens.pop(0)
+        right = parse_factor(tokens)
+        if operator == "*":
+            left = f"(* {left} {right})"
+        elif operator == "/":
+            left = f"(/ {left} {right})"
+
+    return left
+
+def parse_factor(tokens):
     token = tokens.pop(0)
-    if token == "-":
-        operand = parse_expression(tokens)
-        if operand:
-            return f"(- {operand})"
-    elif token == "!":
-        operand = parse_expression(tokens)
-        if operand:
-            return f"(! {operand})"
+
     if token == "(":
         expr = parse_expression(tokens)
-        if expr is not None:
-            if len(tokens) > 0 and tokens[0] == ")":
-                tokens.pop(0)
-                return f"(group {expr})"
-            else:
-                return "Error: Mismatched parentheses."
+        if len(tokens) > 0 and tokens[0] == ")":
+            tokens.pop(0)
+            return f"(group {expr})"
+        else:
+            return "Error: Mismatched parentheses."
+    elif token == "!":
+        operand = parse_factor(tokens)
+        return f"(! {operand})"
+    elif token == "-":
+        operand = parse_factor(tokens)
+        return f"(- {operand})"
+
     return token
 
 if __name__ == "__main__":
