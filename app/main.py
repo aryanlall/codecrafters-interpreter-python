@@ -232,11 +232,14 @@ def parse_expression(tokens):
     if len(tokens) == 0:
         return None
     token = tokens.pop(0)
-    if token in ("-", "!"):
-        if len(tokens) > 0:
-            operand = parse_expression(tokens)
-            if operand:
-                return f"({token} {operand})"
+    if token == "-":
+        operand = parse_expression(tokens)
+        if operand:
+            return f"(negate {operand})"
+    elif token == "!":
+        operand = parse_expression(tokens)
+        if operand:
+            return f"(not {operand})"
     if token == "(":
         expr = parse_expression(tokens)
         if expr is not None:
