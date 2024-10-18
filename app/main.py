@@ -203,6 +203,8 @@ def parse(file_contents):
             tokens.append("(")
         elif c == ")":
             tokens.append(")")
+        elif c == "!":
+            tokens.append("!")
         elif c.isalpha() or c == "_":
             start = i
             while i < len(file_contents) and (file_contents[i].isalnum() or file_contents[i] == "_"):
