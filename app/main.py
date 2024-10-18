@@ -209,6 +209,18 @@ def parse(file_contents):
             tokens.append(")")
         elif c == "!":
             tokens.append("!")
+        elif c == "<":
+            if i + 1 < len(file_contents) and file_contents[i + 1] == "=":
+                tokens.append("<=")
+                i += 1
+            else:
+                tokens.append("<")
+        elif c == ">":
+            if i + 1 < len(file_contents) and file_contents[i + 1] == "=":
+                tokens.append(">=")
+                i += 1
+            else:
+                tokens.append(">")
         elif c.isalpha() or c == "_":
             start = i
             while i < len(file_contents) and (file_contents[i].isalnum() or file_contents[i] == "_"):
@@ -278,6 +290,10 @@ def parse_factor(tokens):
     elif token == "-":
         operand = parse_factor(tokens)
         return f"(- {operand})"
+    elif token in ("<", ">", "<=", ">="):
+        left = parse_factor(tokens)
+        right = parse_factor(tokens)
+        return f"({token} {left} {right})"
 
     return token
 
