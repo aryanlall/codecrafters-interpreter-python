@@ -294,10 +294,6 @@ def parse_factor(tokens):
             return f"(group {expr})"
         else:
             return "Error: Mismatched parentheses."
-    elif token in ("<", ">", "<=", ">="):
-        left = parse_factor(tokens)
-        right = parse_factor(tokens)
-        return f"({token} {left} {right})"
     elif token == "!":
         operand = parse_factor(tokens)
         return f"(! {operand})"
