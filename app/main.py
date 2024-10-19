@@ -257,7 +257,19 @@ def parse(file_contents):
         exit(0)
 
 def parse_expression(tokens):
-    return parse_equality(tokens)
+    if len(tokens) == 0:
+        return None
+
+    expr = parse_equality(tokens)
+
+    while len(tokens) > 0 and tokens[0] in ("+", "-"):
+        operator = tokens.pop(0)
+        right = parse_equality(tokens)
+        if operator == "+":
+            expr = f"(+ {expr} {right})"
+        elif operator == "-":
+            expr = f"(- {expr} {right})"
+    return expr
 
 def parse_equality(tokens):
     left = parse_comparison(tokens)
