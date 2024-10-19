@@ -259,7 +259,6 @@ def parse(file_contents):
 def parse_expression(tokens):
     if len(tokens) == 0:
         return None
-
     expr = parse_equality(tokens)
 
     while len(tokens) > 0 and tokens[0] in ("+", "-"):
@@ -323,7 +322,6 @@ def parse_factor(tokens):
     elif token == "-":
         operand = parse_factor(tokens)
         return f"(- {operand})"
-
     return token
 
 if __name__ == "__main__":
