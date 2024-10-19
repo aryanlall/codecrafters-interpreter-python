@@ -280,7 +280,7 @@ def parse_equality(tokens):
             left = f"(== {left} {right})"
         elif operator == "!=":
             left = f"(!= {left} {right})"
-
+    return left
 def parse_comparison(tokens):
     left = parse_term(tokens)
 
