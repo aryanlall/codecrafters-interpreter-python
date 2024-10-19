@@ -258,14 +258,12 @@ def parse(file_contents):
 
 def parse_expression(tokens, line):
     if len(tokens) == 0:
+        print(f"[line {line}] Error: Expect expression.", file=sys.stderr)
         return None
     expr = parse_equality(tokens, line)
 
     while len(tokens) > 0 and tokens[0] in ("+", "-"):
         operator = tokens.pop(0)
-        if len(tokens) == 0:
-            report_error(")", line, "Expect expression.")
-            return None
         right = parse_equality(tokens, line)
         if operator == "+":
             expr = f"(+ {expr} {right})"
@@ -341,8 +339,11 @@ def parse_unary(tokens, line):
             tokens.pop(0)
             return f"(group {expr})"
         else:
-            report_error(")", line, "Mismatched parentheses.")
+            print(f"[line {line}] Error: Mismatched parentheses.", file=sys.stderr)
             return None
+    elif token == ")":
+        print(f"[line {line}] Error: Unexpected ')' without matching '('.", file=sys.stderr)
+        return None
     elif token == "!":
         operand = parse_unary(tokens, line)
         return f"(! {operand})"
