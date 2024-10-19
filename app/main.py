@@ -256,86 +256,103 @@ def parse(file_contents):
     else:
         exit(0)
 
-def parse_expression(tokens):
+def parse_expression(tokens, line):
     if len(tokens) == 0:
         return None
-    expr = parse_equality(tokens)
+    expr = parse_equality(tokens, line)
 
     while len(tokens) > 0 and tokens[0] in ("+", "-"):
         operator = tokens.pop(0)
-        right = parse_equality(tokens)
+        if len(tokens) == 0:
+            report_error(")", line, "Expect expression.")
+            return None
+        right = parse_equality(tokens, line)
         if operator == "+":
             expr = f"(+ {expr} {right})"
         elif operator == "-":
             expr = f"(- {expr} {right})"
     return expr
 
-def parse_equality(tokens):
-    left = parse_comparison(tokens)
+def parse_equality(tokens, line):
+    left = parse_comparison(tokens, line)
     while len(tokens) > 0 and tokens[0] in ("==", "!="):
         operator = tokens.pop(0)
-        right = parse_comparison(tokens)
+        if len(tokens) == 0:
+            report_error(")", line, "Expect expression.")
+            return None
+        right = parse_comparison(tokens, line)
         if operator == "==":
             left = f"(== {left} {right})"
         elif operator == "!=":
             left = f"(!= {left} {right})"
     return left
 
-def parse_comparison(tokens):
-    left = parse_term(tokens)
+def parse_comparison(tokens, line):
+    left = parse_term(tokens, line)
 
     while len(tokens) > 0 and tokens[0] in ("<", ">", "<=", ">="):
         operator = tokens.pop(0)
-        right = parse_term(tokens)
+        if len(tokens) == 0:
+            report_error(")", line, "Expect expression.")
+            return None
+        right = parse_term(tokens, line)
         left = f"({operator} {left} {right})"
     return left
 
-def parse_term(tokens):
-    left = parse_factor(tokens)
+def parse_term(tokens, line):
+    left = parse_factor(tokens, line)
 
     while len(tokens) > 0 and tokens[0] in ("+", "-"):
         operator = tokens.pop(0)
-        right = parse_factor(tokens)
+        if len(tokens) == 0:
+            report_error(")", line, "Expect expression.")
+            return None
+        right = parse_factor(tokens, line)
         if operator == "+":
             left = f"(+ {left} {right})"
         elif operator == "-":
             left = f"(- {left} {right})"
-
     return left
 
-def parse_factor(tokens):
-    left = parse_unary(tokens)
+def parse_factor(tokens, line):
+    left = parse_unary(tokens, line)
 
     while len(tokens) > 0 and tokens[0] in ("*", "/"):
         operator = tokens.pop(0)
-        right = parse_unary(tokens)
+        if len(tokens) == 0:
+            report_error(")", line, "Expect expression.")
+            return None
+        right = parse_unary(tokens, line)
         if operator == "*":
             left = f"(* {left} {right})"
         elif operator == "/":
             left = f"(/ {left} {right})"
-
     return left
 
-def parse_unary(tokens):
+def parse_unary(tokens, line):
     if len(tokens) == 0:
         return None
 
     token = tokens.pop(0)
 
     if token == "(":
-        expr = parse_expression(tokens)
+        expr = parse_expression(tokens, line)
         if len(tokens) > 0 and tokens[0] == ")":
             tokens.pop(0)
             return f"(group {expr})"
         else:
-            raise Exception("Error: Mismatched parentheses.")
+            report_error(")", line, "Mismatched parentheses.")
+            return None
     elif token == "!":
-        operand = parse_unary(tokens)
+        operand = parse_unary(tokens, line)
         return f"(! {operand})"
     elif token == "-":
-        operand = parse_unary(tokens)
+        operand = parse_unary(tokens, line)
         return f"(- {operand})"
     return token
+
+def report_error(token, line, message):
+    print(f"[line {line}] Error at '{token}': {message}", file=sys.stderr)
 
 if __name__ == "__main__":
     main()
