@@ -287,14 +287,7 @@ def parse_comparison(tokens):
     while len(tokens) > 0 and tokens[0] in ("<", ">", "<=", ">="):
         operator = tokens.pop(0)
         right = parse_term(tokens)
-        if operator == "<":
-            left = f"(< {left} {right})"
-        elif operator == ">":
-            left = f"(> {left} {right})"
-        elif operator == "<=":
-            left = f"(<= {left} {right})"
-        elif operator == ">=":
-            left = f"(>= {left} {right})"
+        left = f"({operator} {left} {right})"
 
     return left
 
