@@ -304,6 +304,19 @@ def parse_term(tokens):
     return left
 
 def parse_factor(tokens):
+    left = parse_unary(tokens)
+
+    while len(tokens) > 0 and tokens[0] in ("*", "/"):
+        operator = tokens.pop(0)
+        right = parse_unary(tokens)
+        if operator == "*":
+            left = f"(* {left} {right})"
+        elif operator == "/":
+            left = f"(/ {left} {right})"
+
+    return left
+
+def parse_unary(tokens):
     if len(tokens) == 0:
         return None
 
@@ -315,12 +328,12 @@ def parse_factor(tokens):
             tokens.pop(0)
             return f"(group {expr})"
         else:
-            return "Error: Mismatched parentheses."
+            raise Exception("Error: Mismatched parentheses.")
     elif token == "!":
-        operand = parse_factor(tokens)
+        operand = parse_unary(tokens)
         return f"(! {operand})"
     elif token == "-":
-        operand = parse_factor(tokens)
+        operand = parse_unary(tokens)
         return f"(- {operand})"
     return token
 
