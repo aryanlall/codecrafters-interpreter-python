@@ -257,7 +257,7 @@ def parse(file_contents):
         exit(0)
 
 def parse_expression(tokens):
-    return parse_equality
+    return parse_equality(tokens)
 
 def parse_equality(tokens):
     left = parse_comparison(tokens)
