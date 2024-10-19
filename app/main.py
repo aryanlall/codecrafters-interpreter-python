@@ -245,7 +245,7 @@ def parse(file_contents):
         i += 1
 
     if not error:
-        ast = parse_expression(tokens)
+        ast = parse_expression(tokens,line)
         if ast:
             print(ast)
         else:
