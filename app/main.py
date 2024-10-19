@@ -252,12 +252,22 @@ def parse_expression(tokens):
     left = parse_comparison(tokens)
 
     while len(tokens) > 0 and tokens[0] in ("+", "-"):
-        operator = parse_comparison.pop(0)
-        right = parse_term(tokens)
+        operator = tokens.pop(0)
+        right = parse_comparison(tokens)
         if operator == "+":
             left = f"(+ {left} {right})"
         elif operator == "-":
             left = f"(- {left} {right})"
+
+    return left
+
+def parse_comparison(tokens):
+    left = parse_term(tokens)
+
+    while len(tokens) > 0 and tokens[0] in ("<", ">", "<=", ">="):
+        operator = tokens.pop(0)
+        right = parse_term(tokens)
+        left = f"({operator} {left} {right})"
 
     return left
 
@@ -274,17 +284,10 @@ def parse_term(tokens):
 
     return left
 
-def parse_comparison(tokens):
-    left = parse_term(tokens)
-
-    while len(tokens) > 0 and tokens[0] in ("<", ">", "<=", ">="):
-        operator = tokens.pop(0)
-        right = parse_term(tokens)
-        left = f"({operator} {left} {right})"
-
-    return left
-
 def parse_factor(tokens):
+    if len(tokens) == 0:
+        return None
+
     token = tokens.pop(0)
 
     if token == "(":
