@@ -339,10 +339,10 @@ def parse_unary(tokens, line):
             tokens.pop(0)
             return f"(group {expr})"
         else:
-            print(f"[line {line}] Error: Mismatched parentheses.", file=sys.stderr)
+            report_error(")", line, "Mismatched parentheses.")
             return None
     elif token == ")":
-        print(f"[line {line}] Error: Unexpected ')' without matching '('.", file=sys.stderr)
+        report_error(")", line, "Unexpected ')' without matching '('.")
         return None
     elif token == "!":
         operand = parse_unary(tokens, line)
