@@ -208,7 +208,17 @@ def parse(file_contents):
         elif c == ")":
             tokens.append(")")
         elif c == "!":
-            tokens.append("!")
+            if i + 1 < len(file_contents) and file_contents[i + 1] == "=":
+                tokens.append("!=")
+                i += 1
+            else:
+                tokens.append("!")
+        elif c == "=":
+            if i + 1 < len(file_contents) and file_contents[i + 1] == "=":
+                tokens.append("==")
+                i += 1
+            else:
+                tokens.append("=")
         elif c == "<":
             if i + 1 < len(file_contents) and file_contents[i + 1] == "=":
                 tokens.append("<=")
@@ -261,13 +271,30 @@ def parse_expression(tokens):
 
     return left
 
+def parse_equality(tokens):
+    left = parse_comparison(tokens)
+    while len(tokens) > 0 and tokens[0] in ("==", "!="):
+        operator = tokens.pop(0)
+        right = parse_comparison(tokens)
+        if operator == "==":
+            left = f"(== {left} {right})"
+        elif operator == "!=":
+            left = f"(!= {left} {right})"
+
 def parse_comparison(tokens):
     left = parse_term(tokens)
 
     while len(tokens) > 0 and tokens[0] in ("<", ">", "<=", ">="):
         operator = tokens.pop(0)
         right = parse_term(tokens)
-        left = f"({operator} {left} {right})"
+        if operator == "<":
+            left = f"(< {left} {right})"
+        elif operator == ">":
+            left = f"(> {left} {right})"
+        elif operator == "<=":
+            left = f"(<= {left} {right})"
+        elif operator == ">=":
+            left = f"(>= {left} {right})"
 
     return left
 
