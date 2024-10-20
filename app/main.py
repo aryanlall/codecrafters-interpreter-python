@@ -250,25 +250,25 @@ def parse(file_contents):
             print(ast)
         else:
             print("Error: Invalid expression.")
-            exit(65)
+            sys.exit(65)
     else:
-        exit(65)
+        sys.exit(65)
 
 def parse_expression(tokens, line):
     if len(tokens) == 0:
         print(f"[line {line}] Error: Expect expression.", file=sys.stderr)
-        exit(65)
+        sys.exit(65)
     expr = parse_equality(tokens, line)
 
     while len(tokens) > 0 and tokens[0] in ("+", "-"):
         operator = tokens.pop(0)
         if len(tokens) == 0 or tokens[0] in ("+", "-", "*", "/", "==", "!="):
             print(f"[line {line}] Error: Expect expression after '{operator}'.", file=sys.stderr)
-            exit(65)
+            sys.exit(65)
         right = parse_equality(tokens, line)
         if right is None:
             print(f"[line {line}] Error: Expect expression after '{operator}'.", file=sys.stderr)
-            exit(65)
+            sys.exit(65)
         expr = f"({operator} {expr} {right})"
     return expr
 
@@ -278,7 +278,7 @@ def parse_equality(tokens, line):
         operator = tokens.pop(0)
         if len(tokens) == 0 or tokens[0] in ("+", "-", "*", "/", "==", "!="):
             print(f"[line {line}] Error: Expect expression after '{operator}'.", file=sys.stderr)
-            exit(65)
+            sys.exit(65)
         right = parse_comparison(tokens, line)
         left = f"({operator} {left} {right})"
     return left
@@ -290,7 +290,7 @@ def parse_comparison(tokens, line):
         operator = tokens.pop(0)
         if len(tokens) == 0 or tokens[0] in ("+", "-", "*", "/", "==", "!="):
             print(f"[line {line}] Error: Expect expression after '{operator}'.", file=sys.stderr)
-            exit(65)
+            sys.exit(65)
         right = parse_term(tokens, line)
         left = f"({operator} {left} {right})"
     return left
@@ -302,7 +302,7 @@ def parse_term(tokens, line):
         operator = tokens.pop(0)
         if len(tokens) == 0 or tokens[0] in ("+", "-", "*", "/", "==", "!="):
             print(f"[line {line}] Error: Expect expression after '{operator}'.", file=sys.stderr)
-            exit(65)
+            sys.exit(65)
         right = parse_factor(tokens, line)
         left = f"({operator} {left} {right})"
     return left
@@ -314,7 +314,7 @@ def parse_factor(tokens, line):
         operator = tokens.pop(0)
         if len(tokens) == 0 or tokens[0] in ("+", "-", "*", "/", "==", "!="):
             print(f"[line {line}] Error: Expect expression after '{operator}'.", file=sys.stderr)
-            exit(65)
+            sys.exit(65)
         right = parse_unary(tokens, line)
         left = f"({operator} {left} {right})"
     return left
@@ -332,7 +332,7 @@ def parse_unary(tokens, line):
             return f"(group {expr})"
         else:
             report_error(")", line, "Mismatched parentheses.")
-            exit(65)
+            sys.exit(65)
     elif token == ")":
         report_error(")", line, "Unexpected ')' without matching '('.")
         return None
@@ -346,7 +346,7 @@ def parse_unary(tokens, line):
 
 def report_error(token, line, message):
     print(f"[line {line}] Error at '{token}': {message}", file=sys.stderr)
-    exit(65)
+    sys.exit(65)
 
 if __name__ == "__main__":
     main()
