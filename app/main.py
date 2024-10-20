@@ -291,9 +291,10 @@ def parse_comparison(tokens, line):
 
     while len(tokens) > 0 and tokens[0] in ("<", ">", "<=", ">="):
         operator = tokens.pop(0)
-        if len(tokens) == 0 or tokens[0] in ("+", "-", "*", "/", "==", "!="):
-            print(f"[line {line}] Error: Expect expression after '{operator}'.", file=sys.stderr)
-            sys.exit(65)
+        if len(tokens) == 0:
+            report_error(operator, line, "Expect expression after operator.")
+            exit(65)
+            return None
         right = parse_term(tokens, line)
         left = f"({operator} {left} {right})"
     return left
