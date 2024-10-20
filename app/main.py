@@ -284,6 +284,7 @@ def parse_equality(tokens, line):
         operator = tokens.pop(0)
         if len(tokens) == 0:
             report_error(")", line, "Expect expression.")
+            exit(65)
             return None
         right = parse_comparison(tokens, line)
         if operator == "==":
@@ -299,6 +300,7 @@ def parse_comparison(tokens, line):
         operator = tokens.pop(0)
         if len(tokens) == 0:
             report_error(")", line, "Expect expression.")
+            exit(65)
             return None
         right = parse_term(tokens, line)
         left = f"({operator} {left} {right})"
@@ -327,6 +329,7 @@ def parse_factor(tokens, line):
         operator = tokens.pop(0)
         if len(tokens) == 0:
             report_error(")", line, "Expect expression.")
+            exit(65)
             return None
         right = parse_unary(tokens, line)
         if operator == "*":
