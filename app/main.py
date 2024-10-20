@@ -259,9 +259,11 @@ def parse_expression(tokens, line):
         print(f"[line {line}] Error: Expect expression.", file=sys.stderr)
         exit(65)
     expr = parse_equality(tokens, line)
-
     while len(tokens) > 0 and tokens[0] in ("+", "-"):
         operator = tokens.pop(0)
+        if len(tokens) == 0 or tokens[0] in ("+", "-", "*", "/", "==", "!="):
+            print(f"[line {line}] Error: Expect expression after '{operator}'.", file=sys.stderr)
+            exit(65)
         right = parse_equality(tokens, line)
         if right is None:
             print(f"[line {line}] Error: Expect expression after '{operator}'.", file=sys.stderr)
@@ -276,8 +278,8 @@ def parse_equality(tokens, line):
     left = parse_comparison(tokens, line)
     while len(tokens) > 0 and tokens[0] in ("==", "!="):
         operator = tokens.pop(0)
-        if len(tokens) == 0:
-            report_error(")", line, "Expect expression.")
+        if len(tokens) == 0 or tokens[0] in ("+", "-", "*", "/", "==", "!="):
+            print(f"[line {line}] Error: Expect expression after '{operator}'.", file=sys.stderr)
             exit(65)
         right = parse_comparison(tokens, line)
         if operator == "==":
@@ -291,8 +293,8 @@ def parse_comparison(tokens, line):
 
     while len(tokens) > 0 and tokens[0] in ("<", ">", "<=", ">="):
         operator = tokens.pop(0)
-        if len(tokens) == 0:
-            report_error(")", line, "Expect expression.")
+        if len(tokens) == 0 or tokens[0] in ("+", "-", "*", "/", "==", "!="):
+            print(f"[line {line}] Error: Expect expression after '{operator}'.", file=sys.stderr)
             exit(65)
         right = parse_term(tokens, line)
         left = f"({operator} {left} {right})"
@@ -303,8 +305,8 @@ def parse_term(tokens, line):
 
     while len(tokens) > 0 and tokens[0] in ("+", "-"):
         operator = tokens.pop(0)
-        if len(tokens) == 0:
-            report_error(")", line, "Expect expression.")
+        if len(tokens) == 0 or tokens[0] in ("+", "-", "*", "/", "==", "!="):
+            print(f"[line {line}] Error: Expect expression after '{operator}'.", file=sys.stderr)
             exit(65)
         right = parse_factor(tokens, line)
         if operator == "+":
@@ -318,8 +320,8 @@ def parse_factor(tokens, line):
 
     while len(tokens) > 0 and tokens[0] in ("*", "/"):
         operator = tokens.pop(0)
-        if len(tokens) == 0:
-            report_error(")", line, "Expect expression.")
+        if len(tokens) == 0 or tokens[0] in ("+", "-", "*", "/", "==", "!="):
+            print(f"[line {line}] Error: Expect expression after '{operator}'.", file=sys.stderr)
             exit(65)
         right = parse_unary(tokens, line)
         if operator == "*":
