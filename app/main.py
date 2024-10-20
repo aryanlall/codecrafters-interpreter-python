@@ -308,6 +308,7 @@ def parse_term(tokens, line):
         if len(tokens) == 0:
             report_error(")", line, "Expect expression.")
             return None
+            exit(65)
         right = parse_factor(tokens, line)
         if operator == "+":
             left = f"(+ {left} {right})"
