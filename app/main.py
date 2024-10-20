@@ -258,7 +258,7 @@ def parse_expression(tokens, line):
     if len(tokens) == 0:
         print(f"[line {line}] Error: Expect expression.", file=sys.stderr)
         sys.exit(65)
-    if tokens[0] in ("+", "-", "*", "/"):
+    if tokens[0] in ("+", "*", "/"):
         print(f"[line {line}] Error: Operator '{tokens[0]}' without an operand.", file=sys.stderr)
         exit(65)
     expr = parse_equality(tokens, line)
