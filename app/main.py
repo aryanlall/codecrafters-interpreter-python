@@ -361,7 +361,7 @@ def evaluate_expression(ast):
     if isinstance(ast, float):
         return ast
     elif isinstance(ast, bool):
-        return str(ast).lower()
+        return "true" if ast else "false"
     elif ast is None:
         return "nil"
     elif isinstance(ast, str):
@@ -382,17 +382,17 @@ def evaluate_expression(ast):
         elif operator == "/":
             return left / right
         elif operator == "==":
-            return str(left).lower() == str(right).lower()
+            return "true" if left == right else "false"
         elif operator == "!=":
-            return str(left).lower() != str(right).lower()
+            return "true" if left != right else "false"
         elif operator == "<":
-            return left < right
+            return "true" if left < right else "false"
         elif operator == "<=":
-            return left <= right
+            return "true" if left <= right else "false"
         elif operator == ">":
-            return left > right
+            return "true" if left > right else "false"
         elif operator == ">=":
-            return left >= right
+            return "true" if left >= right else "false"
     return None
 
 def parse_expression(tokens, line):
