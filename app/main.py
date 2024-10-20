@@ -262,12 +262,14 @@ def parse(file_contents):
 def parse_expression(tokens, line):
     if len(tokens) == 0:
         print(f"[line {line}] Error: Expect expression.", file=sys.stderr)
+        exit(65)
         return None
     expr = parse_equality(tokens, line)
 
     while len(tokens) > 0 and tokens[0] in ("+", "-"):
         operator = tokens.pop(0)
         right = parse_equality(tokens, line)
+        exit(65)
         if operator == "+":
             expr = f"(+ {expr} {right})"
         elif operator == "-":
@@ -307,7 +309,6 @@ def parse_term(tokens, line):
         operator = tokens.pop(0)
         if len(tokens) == 0:
             report_error(")", line, "Expect expression.")
-            exit(65)
             return None
         right = parse_factor(tokens, line)
         if operator == "+":
