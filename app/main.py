@@ -250,6 +250,9 @@ def parse(file_contents):
             print(ast)
         else:
             print("Error: Invalid expression.")
+            exit(65)
+    else:
+        exit(65)
 
     if error:
         exit(65)
@@ -340,10 +343,12 @@ def parse_unary(tokens, line):
             return f"(group {expr})"
         else:
             report_error(")", line, "Mismatched parentheses.")
+            exit(65)
             return None
     elif token == ")":
         report_error(")", line, "Unexpected ')' without matching '('.")
         return None
+        exit(65)
     elif token == "!":
         operand = parse_unary(tokens, line)
         return f"(! {operand})"
