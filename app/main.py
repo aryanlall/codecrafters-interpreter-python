@@ -269,9 +269,6 @@ def parse_expression(tokens, line):
     while len(tokens) > 0 and tokens[0] in ("+", "-"):
         operator = tokens.pop(0)
         right = parse_equality(tokens, line)
-        if right is None:
-            print(f"[line {line}] Error: Expect expression after '{operator}'.", file=sys.stderr)
-            exit(65)
         if operator == "+":
             expr = f"(+ {expr} {right})"
         elif operator == "-":
@@ -367,6 +364,7 @@ def parse_unary(tokens, line):
 
 def report_error(token, line, message):
     print(f"[line {line}] Error at '{token}': {message}", file=sys.stderr)
+    exit(65)
 
 if __name__ == "__main__":
     main()
