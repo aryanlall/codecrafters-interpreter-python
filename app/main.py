@@ -254,16 +254,10 @@ def parse(file_contents):
     else:
         exit(65)
 
-    if error:
-        exit(65)
-    else:
-        exit(0)
-
 def parse_expression(tokens, line):
     if len(tokens) == 0:
         print(f"[line {line}] Error: Expect expression.", file=sys.stderr)
         exit(65)
-        return None
     expr = parse_equality(tokens, line)
 
     while len(tokens) > 0 and tokens[0] in ("+", "-"):
@@ -285,7 +279,6 @@ def parse_equality(tokens, line):
         if len(tokens) == 0:
             report_error(")", line, "Expect expression.")
             exit(65)
-            return None
         right = parse_comparison(tokens, line)
         if operator == "==":
             left = f"(== {left} {right})"
@@ -301,7 +294,6 @@ def parse_comparison(tokens, line):
         if len(tokens) == 0:
             report_error(")", line, "Expect expression.")
             exit(65)
-            return None
         right = parse_term(tokens, line)
         left = f"({operator} {left} {right})"
     return left
@@ -314,7 +306,6 @@ def parse_term(tokens, line):
         if len(tokens) == 0:
             report_error(")", line, "Expect expression.")
             exit(65)
-            return None
         right = parse_factor(tokens, line)
         if operator == "+":
             left = f"(+ {left} {right})"
@@ -330,7 +321,6 @@ def parse_factor(tokens, line):
         if len(tokens) == 0:
             report_error(")", line, "Expect expression.")
             exit(65)
-            return None
         right = parse_unary(tokens, line)
         if operator == "*":
             left = f"(* {left} {right})"
@@ -356,7 +346,6 @@ def parse_unary(tokens, line):
     elif token == ")":
         report_error(")", line, "Unexpected ')' without matching '('.")
         return None
-        exit(65)
     elif token == "!":
         operand = parse_unary(tokens, line)
         return f"(! {operand})"
