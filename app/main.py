@@ -361,13 +361,12 @@ def evaluate_expression(ast):
     if isinstance(ast, float):
         return ast
     elif isinstance(ast, bool):
-        return ast
+        return str(ast).lower()
     elif ast is None:
-        return None
+        return "nil"
     elif isinstance(ast, str):
-        if ast in ["true", "false", "nil"]:
+        if ast in ["true", "false"]:
             return ast
-    # Evaluate binary operations
     if isinstance(ast, str) and ast.startswith("("):
         parts = ast[1:-1].split(" ")
         operator = parts[0]
@@ -383,9 +382,9 @@ def evaluate_expression(ast):
         elif operator == "/":
             return left / right
         elif operator == "==":
-            return left == right
+            return str(left).lower() == str(right).lower()
         elif operator == "!=":
-            return left != right
+            return str(left).lower() != str(right).lower()
         elif operator == "<":
             return left < right
         elif operator == "<=":
@@ -395,7 +394,7 @@ def evaluate_expression(ast):
         elif operator == ">=":
             return left >= right
     return None
-    
+
 def parse_expression(tokens, line):
     if len(tokens) == 0:
         print(f"[line {line}] Error: Expect expression.", file=sys.stderr)
