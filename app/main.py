@@ -10,13 +10,13 @@ def main():
     print("Logs from your program will appear here!", file=sys.stderr)
 
     if len(sys.argv) < 3:
-        print("Usage: ./your_program.sh <tokenize|parse> <filename>", file=sys.stderr)
+        print("Usage: ./your_program.sh <tokenize|parse|evaluate> <filename>", file=sys.stderr)
         exit(1)
 
     command = sys.argv[1]
     filename = sys.argv[2]
 
-    if command not in ["tokenize", "parse"]:
+    if command not in ["tokenize", "parse", "evaluate"]:
         print(f"Unknown command: {command}", file=sys.stderr)
         exit(1)
 
@@ -27,6 +27,9 @@ def main():
         tokenize(file_contents)
     elif command == "parse":
         parse(file_contents)
+    elif command == "evaluate":
+        result = evaluate(file_contents)
+        print(result)
 
 def tokenize(file_contents):
     error = False
@@ -243,7 +246,107 @@ def parse(file_contents):
             print(f"[line {line}] Error: Unexpected character: {c}", file=sys.stderr)
             break
         i += 1
+def evaluate(file_contents):
+    tokens = []
+    i = 0
+    line = 1
+    error = False
 
+    while i < len(file_contents):
+        c = file_contents[i]
+
+        if c == "\n":
+            line += 1
+        elif c in " \r\t":
+            pass
+        elif c.isdigit():
+            start = i
+            has_dot = False
+            while i < len(file_contents) and (file_contents[i].isdigit() or file_contents[i] == "."):
+                if file_contents[i] == ".":
+                    if has_dot:
+                        error = True
+                        print(f"[line {line}] Error: Unexpected character: .", file=sys.stderr)
+                        break
+                    has_dot = True
+                i += 1
+            number = file_contents[start:i]
+            try:
+                float_value = float(number)
+                tokens.append(float_value)
+            except ValueError:
+                error = True
+                print(f"[line {line}] Error: Invalid number literal: {number}", file=sys.stderr)
+                break
+            continue
+        elif c == '"':
+            word = ""
+            i += 1
+            while i < len(file_contents) and file_contents[i] != '"':
+                word += file_contents[i]
+                i += 1
+            if i == len(file_contents):
+                error = True
+                print(f"[line {line}] Error: Unterminated string literal.", file=sys.stderr)
+                break
+            tokens.append(word)
+        elif c == "t" and file_contents[i:i+4] == "true":
+            tokens.append(True)
+            i += 4
+        elif c == "f" and file_contents[i:i+5] == "false":
+            tokens.append(False)
+            i += 5
+        elif c == "n" and file_contents[i:i+4] == "nil":
+            tokens.append(None)
+            i += 4
+        elif c == "+":
+            tokens.append("+")
+        elif c == "-":
+            tokens.append("-")
+        elif c == "*":
+            tokens.append("*")
+        elif c == "/":
+            tokens.append("/")
+        elif c == "(":
+            tokens.append("(")
+        elif c == ")":
+            tokens.append(")")
+        elif c == "!":
+            if i + 1 < len(file_contents) and file_contents[i + 1] == "=":
+                tokens.append("!=")
+                i += 1
+            else:
+                tokens.append("!")
+        elif c == "=":
+            if i + 1 < len(file_contents) and file_contents[i + 1] == "=":
+                tokens.append("==")
+                i += 1
+            else:
+                tokens.append("=")
+        elif c == "<":
+            if i + 1 < len(file_contents) and file_contents[i + 1] == "=":
+                tokens.append("<=")
+                i += 1
+            else:
+                tokens.append("<")
+        elif c == ">":
+            if i + 1 < len(file_contents) and file_contents[i + 1] == "=":
+                tokens.append(">=")
+                i += 1
+            else:
+                tokens.append(">")
+        elif c.isalpha() or c == "_":
+            start = i
+            while i < len(file_contents) and (file_contents[i].isalnum() or file_contents[i] == "_"):
+                i += 1
+            identifier = file_contents[start:i]
+            tokens.append(identifier)
+            continue
+        else:
+            error = True
+            print(f"[line {line}] Error: Unexpected character: {c}", file=sys.stderr)
+            break
+        i += 1
     if not error:
         ast = parse_expression(tokens,line)
         if ast:
@@ -254,6 +357,45 @@ def parse(file_contents):
     else:
         sys.exit(65)
 
+def evaluate_expression(ast):
+    if isinstance(ast, float):
+        return ast
+    elif isinstance(ast, bool):
+        return ast
+    elif ast is None:
+        return None
+    elif isinstance(ast, str):
+        if ast in ["true", "false", "nil"]:
+            return ast
+    # Evaluate binary operations
+    if isinstance(ast, str) and ast.startswith("("):
+        parts = ast[1:-1].split(" ")
+        operator = parts[0]
+        left = evaluate_expression(parts[1])
+        right = evaluate_expression(parts[2])
+        
+        if operator == "+":
+            return left + right
+        elif operator == "-":
+            return left - right
+        elif operator == "*":
+            return left * right
+        elif operator == "/":
+            return left / right
+        elif operator == "==":
+            return left == right
+        elif operator == "!=":
+            return left != right
+        elif operator == "<":
+            return left < right
+        elif operator == "<=":
+            return left <= right
+        elif operator == ">":
+            return left > right
+        elif operator == ">=":
+            return left >= right
+    return None
+    
 def parse_expression(tokens, line):
     if len(tokens) == 0:
         print(f"[line {line}] Error: Expect expression.", file=sys.stderr)
