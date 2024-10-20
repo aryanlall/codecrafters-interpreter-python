@@ -259,6 +259,7 @@ def parse_expression(tokens, line):
         print(f"[line {line}] Error: Expect expression.", file=sys.stderr)
         exit(65)
     expr = parse_equality(tokens, line)
+
     while len(tokens) > 0 and tokens[0] in ("+", "-"):
         operator = tokens.pop(0)
         if len(tokens) == 0 or tokens[0] in ("+", "-", "*", "/", "==", "!="):
@@ -268,10 +269,7 @@ def parse_expression(tokens, line):
         if right is None:
             print(f"[line {line}] Error: Expect expression after '{operator}'.", file=sys.stderr)
             exit(65)
-        if operator == "+":
-            expr = f"(+ {expr} {right})"
-        elif operator == "-":
-            expr = f"(- {expr} {right})"
+        expr = f"({operator} {expr} {right})"
     return expr
 
 def parse_equality(tokens, line):
@@ -282,10 +280,7 @@ def parse_equality(tokens, line):
             print(f"[line {line}] Error: Expect expression after '{operator}'.", file=sys.stderr)
             exit(65)
         right = parse_comparison(tokens, line)
-        if operator == "==":
-            left = f"(== {left} {right})"
-        elif operator == "!=":
-            left = f"(!= {left} {right})"
+        left = f"({operator} {left} {right})"
     return left
 
 def parse_comparison(tokens, line):
@@ -309,10 +304,7 @@ def parse_term(tokens, line):
             print(f"[line {line}] Error: Expect expression after '{operator}'.", file=sys.stderr)
             exit(65)
         right = parse_factor(tokens, line)
-        if operator == "+":
-            left = f"(+ {left} {right})"
-        elif operator == "-":
-            left = f"(- {left} {right})"
+        left = f"({operator} {left} {right})"
     return left
 
 def parse_factor(tokens, line):
@@ -324,10 +316,7 @@ def parse_factor(tokens, line):
             print(f"[line {line}] Error: Expect expression after '{operator}'.", file=sys.stderr)
             exit(65)
         right = parse_unary(tokens, line)
-        if operator == "*":
-            left = f"(* {left} {right})"
-        elif operator == "/":
-            left = f"(/ {left} {right})"
+        left = f"({operator} {left} {right})"
     return left
 
 def parse_unary(tokens, line):
@@ -344,7 +333,6 @@ def parse_unary(tokens, line):
         else:
             report_error(")", line, "Mismatched parentheses.")
             exit(65)
-            return None
     elif token == ")":
         report_error(")", line, "Unexpected ')' without matching '('.")
         return None
