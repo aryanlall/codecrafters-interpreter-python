@@ -246,6 +246,7 @@ def parse(file_contents):
             print(f"[line {line}] Error: Unexpected character: {c}", file=sys.stderr)
             break
         i += 1
+
 def evaluate(file_contents):
     tokens = []
     i = 0
@@ -379,6 +380,7 @@ def evaluate_expression(ast):
             return str(float(left_value) * float(right_value))
         elif operator == "/":
             return str(float(left_value) / float(right_value))
+
     return None
 
 def parse_expression(tokens, line):
