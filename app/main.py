@@ -365,8 +365,10 @@ def evaluate_expression(ast):
     elif ast is None:
         return "nil"
     elif isinstance(ast, str):
-        if ast in ["true", "false"]:
-            return ast
+        if ast == "true":
+            return "true"
+        elif ast == "false":
+            return "false"
     if isinstance(ast, str) and ast.startswith("("):
         parts = ast[1:-1].split(" ")
         operator = parts[0]
