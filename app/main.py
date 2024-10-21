@@ -349,37 +349,35 @@ def evaluate(file_contents):
             break
         i += 1
     if not error:
-        ast = parse_expression(tokens, line)
-        if ast:
-            result = evaluate_expression(ast)
-            if result is not None:
-                print(result)
-            else:
-                sys.exit(65)
+        result = evaluate_expression(tokens)
+        if result is not None:
+            print(result)
         else:
             sys.exit(65)
     else:
         sys.exit(65)
 
-def evaluate_expression(ast):
-    if isinstance(ast, bool):
-        return "true" if ast else "false"
-    elif ast is None:
-        return "nil"
-    elif isinstance(ast, float):
-        return str(ast)
-    if isinstance(ast, tuple):
-        left, operator, right = ast
-        left_value = evaluate_expression(left)
-        right_value = evaluate_expression(right)
-        if operator == "+":
-            return str(float(left_value) + float(right_value))
-        elif operator == "-":
-            return str(float(left_value) - float(right_value))
-        elif operator == "*":
-            return str(float(left_value) * float(right_value))
-        elif operator == "/":
-            return str(float(left_value) / float(right_value))
+def evaluate_expression(tokens):
+    if len(tokens) == 1:
+        token = tokens[0]
+        if isinstance(token, bool):
+            return "true" if token else "false"
+        elif token is None:
+            return "nil"
+        elif isinstance(token, float):
+            return str(token)
+
+    if len(tokens) == 3:
+        left, operator, right = tokens
+        if isinstance(left, float) and isinstance(right, float):
+            if operator == "+":
+                return str(left + right)
+            elif operator == "-":
+                return str(left - right)
+            elif operator == "*":
+                return str(left * right)
+            elif operator == "/":
+                return str(left / right)
 
     return None
 
