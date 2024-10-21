@@ -363,7 +363,7 @@ def evaluate_expression(ast):
     elif ast is None:
         return "nil"
     elif isinstance(ast, float):
-        return ast
+        return str(ast)
     if isinstance(ast, str):
         if ast == "true":
             return "true"
@@ -371,32 +371,32 @@ def evaluate_expression(ast):
             return "false"
         elif ast == "nil":
             return "nil"
-    if isinstance(ast, str) and ast.startswith("("):
-        parts = ast[1:-1].split(" ")
-        operator = parts[0]
-        left = evaluate_expression(parts[1])
-        right = evaluate_expression(parts[2])
-        
+    
+    if isinstance(ast, list) and len(ast) == 3:
+        left = evaluate_expression(ast[0])
+        operator = ast[1]
+        right = evaluate_expression(ast[2])
+
         if operator == "+":
-            return left + right
+            return str(float(left) + float(right))
         elif operator == "-":
-            return left - right
+            return str(float(left) - float(right))
         elif operator == "*":
-            return left * right
+            return str(float(left) * float(right))
         elif operator == "/":
-            return left / right
+            return str(float(left) / float(right))
         elif operator == "==":
             return "true" if left == right else "false"
         elif operator == "!=":
             return "true" if left != right else "false"
         elif operator == "<":
-            return "true" if left < right else "false"
+            return "true" if float(left) < float(right) else "false"
         elif operator == "<=":
-            return "true" if left <= right else "false"
+            return "true" if float(left) <= float(right) else "false"
         elif operator == ">":
-            return "true" if left > right else "false"
+            return "true" if float(left) > float(right) else "false"
         elif operator == ">=":
-            return "true" if left >= right else "false"
+            return "true" if float(left) >= float(right) else "false"
     return None
 
 def parse_expression(tokens, line):
