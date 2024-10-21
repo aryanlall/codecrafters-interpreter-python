@@ -358,17 +358,19 @@ def evaluate(file_contents):
         sys.exit(65)
 
 def evaluate_expression(ast):
-    if isinstance(ast, float):
-        return ast
-    elif isinstance(ast, bool):
+    if isinstance(ast, bool):
         return "true" if ast else "false"
     elif ast is None:
         return "nil"
-    elif isinstance(ast, str):
+    elif isinstance(ast, float):
+        return ast
+    if isinstance(ast, str):
         if ast == "true":
             return "true"
         elif ast == "false":
             return "false"
+        elif ast == "nil":
+            return "nil"
     if isinstance(ast, str) and ast.startswith("("):
         parts = ast[1:-1].split(" ")
         operator = parts[0]
