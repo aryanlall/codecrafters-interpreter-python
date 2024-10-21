@@ -373,15 +373,14 @@ def evaluate_expression(ast):
         left, operator, right = ast
         left_value = evaluate_expression(left)
         right_value = evaluate_expression(right)
-
         if operator == "+":
-            return float(left_value) + float(right_value)
+            return str(float(left_value) + float(right_value))
         elif operator == "-":
-            return float(left_value) - float(right_value)
+            return str(float(left_value) - float(right_value))
         elif operator == "*":
-            return float(left_value) * float(right_value)
+            return str(float(left_value) * float(right_value))
         elif operator == "/":
-            return float(left_value) / float(right_value)
+            return str(float(left_value) / float(right_value))
     return None
 
 def parse_expression(tokens, line):
