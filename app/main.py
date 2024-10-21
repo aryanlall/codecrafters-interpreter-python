@@ -251,7 +251,6 @@ def evaluate(file_contents):
     tokens = []
     i = 0
     line = 1
-    error = False
 
     while i < len(file_contents):
         c = file_contents[i]
@@ -266,65 +265,51 @@ def evaluate(file_contents):
             while i < len(file_contents) and (file_contents[i].isdigit() or file_contents[i] == "."):
                 if file_contents[i] == ".":
                     if has_dot:
-                        error = True
                         print(f"[line {line}] Error: Unexpected character: .", file=sys.stderr)
-                        break
+                        sys.exit(65)
                     has_dot = True
                 i += 1
-            number = file_contents[start:i]
-            try:
-                float_value = float(number)
-                tokens.append(float_value)
-            except ValueError:
-                error = True
-                print(f"[line {line}] Error: Invalid number literal: {number}", file=sys.stderr)
-                break
+            number = float(file_contents[start:i])
+            tokens.append(number)
             continue
-        elif c == "t" and file_contents[i:i+4] == "true":
+        elif file_contents.startswith("true", i):
             tokens.append(True)
             i += 4
-        elif c == "f" and file_contents[i:i+5] == "false":
+        elif file_contents.startswith("false", i):
             tokens.append(False)
             i += 5
-        elif c == "n" and file_contents[i:i+4] == "nil":
+        elif file_contents.startswith("nil", i):
             tokens.append(None)
-            i += 4
-        elif c == "+":
-            tokens.append("+")
-        elif c == "-":
-            tokens.append("-")
-        elif c == "*":
-            tokens.append("*")
-        elif c == "/":
-            tokens.append("/")
+            i += 3
+        elif c == "+" or c == "-" or c == "*" or c == "/":
+            tokens.append(c)
         else:
-            error = True
             print(f"[line {line}] Error: Unexpected character: {c}", file=sys.stderr)
-            break
+            sys.exit(65)
         i += 1
 
-    if not error:
+    if tokens:
         result = evaluate_expression(tokens)
         if result is not None:
             print(result)
-        else:
-            sys.exit(65)
     else:
         sys.exit(65)
 
 def evaluate_expression(tokens):
     if len(tokens) == 1:
         token = tokens[0]
-        if isinstance(token, bool):
-            return "true" if token else "false"
+        if token is True:
+            return "true"
+        elif token is False:
+            return "false"
         elif token is None:
             return "nil"
-        elif isinstance(token, float):
+        elif isinstance(token, (int, float)):
             return str(token)
 
     if len(tokens) == 3:
         left, operator, right = tokens
-        if isinstance(left, float) and isinstance(right, float):
+        if isinstance(left, (int, float)) and isinstance(right, (int, float)):
             if operator == "+":
                 return str(left + right)
             elif operator == "-":
@@ -334,7 +319,7 @@ def evaluate_expression(tokens):
             elif operator == "/":
                 return str(left / right)
 
-    return ""
+    return None
 
 def parse_expression(tokens, line):
     if len(tokens) == 0:
