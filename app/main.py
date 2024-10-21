@@ -284,14 +284,21 @@ def evaluate(file_contents):
         elif c == "+" or c == "-" or c == "*" or c == "/":
             tokens.append(c)
         else:
+            error = True
             print(f"[line {line}] Error: Unexpected character: {c}", file=sys.stderr)
             sys.exit(65)
         i += 1
 
-    if tokens:
-        result = evaluate_expression(tokens)
-        if result is not None:
-            return result  # Return valid result instead of directly printing it
+    if not error:
+        ast = parse_expression(tokens, line)
+        if ast:
+            result = evaluate_expression(ast)
+            if result is not None:
+                return result
+            else:
+                sys.exit(65)
+        else:
+            sys.exit(65)
     else:
         sys.exit(65)
 
