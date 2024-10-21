@@ -354,10 +354,8 @@ def evaluate(file_contents):
             if result is not None:
                 print(result)
             else:
-                print("Error: Invalid expression.")
                 sys.exit(65)
         else:
-            print("Error: Invalid expression.")
             sys.exit(65)
     else:
         sys.exit(65)
