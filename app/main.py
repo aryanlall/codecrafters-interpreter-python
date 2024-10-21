@@ -379,7 +379,7 @@ def evaluate_expression(tokens):
             elif operator == "/":
                 return str(left / right)
 
-    return None
+    return ""
 
 def parse_expression(tokens, line):
     if len(tokens) == 0:
