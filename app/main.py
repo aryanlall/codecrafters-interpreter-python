@@ -280,17 +280,6 @@ def evaluate(file_contents):
                 print(f"[line {line}] Error: Invalid number literal: {number}", file=sys.stderr)
                 break
             continue
-        elif c == '"':
-            word = ""
-            i += 1
-            while i < len(file_contents) and file_contents[i] != '"':
-                word += file_contents[i]
-                i += 1
-            if i == len(file_contents):
-                error = True
-                print(f"[line {line}] Error: Unterminated string literal.", file=sys.stderr)
-                break
-            tokens.append(word)
         elif c == "t" and file_contents[i:i+4] == "true":
             tokens.append(True)
             i += 4
@@ -308,46 +297,12 @@ def evaluate(file_contents):
             tokens.append("*")
         elif c == "/":
             tokens.append("/")
-        elif c == "(":
-            tokens.append("(")
-        elif c == ")":
-            tokens.append(")")
-        elif c == "!":
-            if i + 1 < len(file_contents) and file_contents[i + 1] == "=":
-                tokens.append("!=")
-                i += 1
-            else:
-                tokens.append("!")
-        elif c == "=":
-            if i + 1 < len(file_contents) and file_contents[i + 1] == "=":
-                tokens.append("==")
-                i += 1
-            else:
-                tokens.append("=")
-        elif c == "<":
-            if i + 1 < len(file_contents) and file_contents[i + 1] == "=":
-                tokens.append("<=")
-                i += 1
-            else:
-                tokens.append("<")
-        elif c == ">":
-            if i + 1 < len(file_contents) and file_contents[i + 1] == "=":
-                tokens.append(">=")
-                i += 1
-            else:
-                tokens.append(">")
-        elif c.isalpha() or c == "_":
-            start = i
-            while i < len(file_contents) and (file_contents[i].isalnum() or file_contents[i] == "_"):
-                i += 1
-            identifier = file_contents[start:i]
-            tokens.append(identifier)
-            continue
         else:
             error = True
             print(f"[line {line}] Error: Unexpected character: {c}", file=sys.stderr)
             break
         i += 1
+
     if not error:
         result = evaluate_expression(tokens)
         if result is not None:
