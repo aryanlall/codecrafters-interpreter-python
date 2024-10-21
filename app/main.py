@@ -348,9 +348,14 @@ def evaluate(file_contents):
             break
         i += 1
     if not error:
-        ast = parse_expression(tokens,line)
+        ast = parse_expression(tokens, line)
         if ast:
-            print(ast)
+            result = evaluate_expression(ast)
+            if result is not None:
+                print(result)
+            else:
+                print("Error: Invalid expression.")
+                sys.exit(65)
         else:
             print("Error: Invalid expression.")
             sys.exit(65)
@@ -364,39 +369,19 @@ def evaluate_expression(ast):
         return "nil"
     elif isinstance(ast, float):
         return str(ast)
-    if isinstance(ast, str):
-        if ast == "true":
-            return "true"
-        elif ast == "false":
-            return "false"
-        elif ast == "nil":
-            return "nil"
-    
-    if isinstance(ast, list) and len(ast) == 3:
-        left = evaluate_expression(ast[0])
-        operator = ast[1]
-        right = evaluate_expression(ast[2])
+    if isinstance(ast, tuple):
+        left, operator, right = ast
+        left_value = evaluate_expression(left)
+        right_value = evaluate_expression(right)
 
         if operator == "+":
-            return str(float(left) + float(right))
+            return float(left_value) + float(right_value)
         elif operator == "-":
-            return str(float(left) - float(right))
+            return float(left_value) - float(right_value)
         elif operator == "*":
-            return str(float(left) * float(right))
+            return float(left_value) * float(right_value)
         elif operator == "/":
-            return str(float(left) / float(right))
-        elif operator == "==":
-            return "true" if left == right else "false"
-        elif operator == "!=":
-            return "true" if left != right else "false"
-        elif operator == "<":
-            return "true" if float(left) < float(right) else "false"
-        elif operator == "<=":
-            return "true" if float(left) <= float(right) else "false"
-        elif operator == ">":
-            return "true" if float(left) > float(right) else "false"
-        elif operator == ">=":
-            return "true" if float(left) >= float(right) else "false"
+            return float(left_value) / float(right_value)
     return None
 
 def parse_expression(tokens, line):
