@@ -291,7 +291,7 @@ def evaluate(file_contents):
     if tokens:
         result = evaluate_expression(tokens)
         if result is not None:
-            print(result)
+            return result  # Return valid result instead of directly printing it
     else:
         sys.exit(65)
 
