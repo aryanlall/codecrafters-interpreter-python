@@ -292,6 +292,7 @@ def evaluate(file_contents):
     if not error:
         ast = parse_expression(tokens, line)
         if ast:
+            
             result = evaluate_expression(ast)
             if result is not None:
                 return result
