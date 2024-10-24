@@ -333,6 +333,10 @@ def evaluate_expression(tokens):
                 return str(left * right)
             elif operator == "/":
                 return str(left / right)
+        if operator == "==":
+            return "true" if left == right else "false"
+        elif operator == "!=":
+            return "true" if left != right else "false"
 
     print("Error: Invalid expression or token structure.", file=sys.stderr)
     sys.exit(65)
