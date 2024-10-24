@@ -251,6 +251,7 @@ def evaluate(file_contents):
     tokens = []
     i = 0
     line = 1
+    error = False
 
     while i < len(file_contents):
         c = file_contents[i]
@@ -292,7 +293,6 @@ def evaluate(file_contents):
     if not error:
         ast = parse_expression(tokens, line)
         if ast:
-            
             result = evaluate_expression(ast)
             if result is not None:
                 return result
