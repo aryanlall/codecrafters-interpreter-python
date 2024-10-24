@@ -304,6 +304,10 @@ def evaluate(file_contents):
         sys.exit(65)
 
 def evaluate_expression(tokens):
+    if not isinstance(tokens, list):
+        print(f"Error: Expected a list of tokens, but got {type(tokens).__name__}.", file=sys.stderr)
+        sys.exit(65)
+    
     if len(tokens) == 1:
         token = tokens[0]
         if token is True:
@@ -327,7 +331,8 @@ def evaluate_expression(tokens):
             elif operator == "/":
                 return str(left / right)
 
-    return None
+    print("Error: Invalid expression or token structure.", file=sys.stderr)
+    sys.exit(65)
 
 def parse_expression(tokens, line):
     if len(tokens) == 0:
