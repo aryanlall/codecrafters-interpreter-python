@@ -290,9 +290,11 @@ def evaluate(file_contents):
             sys.exit(65)
         i += 1
 
+    print(f"Tokens: {tokens}", file=sys.stderr)
     if not error:
         ast = parse_expression(tokens, line)
-        if isinstance(ast, list):
+        print(f"AST: {ast}", file=sys.stderr)
+        if isinstance(ast, list): 
             result = evaluate_expression(ast)
             if result is not None:
                 return result
