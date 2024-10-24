@@ -282,7 +282,7 @@ def evaluate(file_contents):
         elif file_contents.startswith("nil", i):
             tokens.append(None)
             i += 3
-        elif c == "+" or c == "-" or c == "*" or c == "/":
+        elif c in "+-*/":
             tokens.append(c)
         else:
             error = True
@@ -292,13 +292,14 @@ def evaluate(file_contents):
 
     if not error:
         ast = parse_expression(tokens, line)
-        if ast:
+        if isinstance(ast, list):
             result = evaluate_expression(ast)
             if result is not None:
                 return result
             else:
                 sys.exit(65)
         else:
+            print("Error: Failed to parse a valid expression.", file=sys.stderr)
             sys.exit(65)
     else:
         sys.exit(65)
